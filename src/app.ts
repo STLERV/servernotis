@@ -52,6 +52,7 @@ io.on("connection", (socket) => {
     socket.on("dash", (message) => {
         console.log("Se ha conectado el dashboard");
         dashSocket = socket;
+        conectados.push(socket);
 
     });
     socket.on("usuarioConectado", (conectado) => {
@@ -105,6 +106,29 @@ io.on("connection", (socket) => {
             conectado.soc.emit ("notificacion", info.mensaje);
         }
     });
+
+
+    socket.on("notificacionvotar", (notificacionvotar) => {
+        console.log("Notifica cambio en la puntuacion de un concurso ", notificacionvotar);
+
+        try
+        {
+        var notificacionvotardash = 'dash tienes una nueva puntuación';
+        dashSocket.emit ("notificacionvotardash", notificacionvotardash);
+        
+         console.log("despues de el emit");
+
+        }
+         catch (error)  {
+            console.log ("error");
+            console.log (error);
+        }
+         
+
+
+    });
+ 
+ 
     // Notificaciones para los alumnos de un equipo
     socket.on("notificacionEquipo", (info) => {
         console.log("Recibo notificacion para equipo ", info);
@@ -125,6 +149,8 @@ io.on("connection", (socket) => {
             console.log (error);
         });
     });
+
+
 
     // Notificaciones para los alumnos de un grupo
     socket.on("notificacionGrupo", (info) => {
